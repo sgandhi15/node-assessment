@@ -2,6 +2,8 @@
 /* eslint-disable import/no-dynamic-require */
 if (!process.env.__ALREADY_BOOTSTRAPPED_ENVS) require('dotenv').config();
 
+// Vercel's Express detector requires the entrypoint to import express directly.
+require('express');
 const fs = require('fs');
 const { createServer } = require('@app-core/server');
 const { createConnection } = require('@app-core/mongoose');
@@ -89,4 +91,8 @@ ENDPOINT_CONFIGS.forEach((config) => {
   setupEndpointHandlers(config.path, config.options);
 });
 
-server.startServer();
+if (process.env.VERCEL) {
+  module.exports = server.app;
+} else {
+  server.startServer();
+}

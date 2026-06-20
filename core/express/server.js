@@ -301,6 +301,7 @@ function Server(serverConfig = {}) {
   }
 
   return {
+    app,
     startServer,
     addHandler,
     executeRequest,
